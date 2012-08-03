@@ -1,0 +1,8 @@
+{
+  "name": "canvas-playground",
+  "version": "0.0.1",
+  "dependencies": {
+    "coffee-script": "~1.2",
+    "stitch": "~0.3.3"
+  }
+}
