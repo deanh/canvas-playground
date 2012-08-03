@@ -17,7 +17,7 @@ npm install
 ## Use
 
 * Extend from entity.coffee and rect.coffee for your game entities and
-drawing primitive (or duck type, the APIs are super simple).
+drawing primitives (or, duck type--the APIs are super simple).
 
 * Instantiate your entities in main.coffee
 
