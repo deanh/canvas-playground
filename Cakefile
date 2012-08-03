@@ -7,7 +7,7 @@ task 'build', 'Build CS', ->
     paths: [__dirname + '/lib']
 
   package.compile (err, source) ->
-    fs.writeFile 'public/js/chat.js', source, (err) ->
+    fs.writeFile 'public/js/playground.js', source, (err) ->
       throw err if err
-      console.log 'Compiled public/js/chat.js'
+      console.log 'Compiled public/js/playground.js'
 

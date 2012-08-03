@@ -74,11 +74,4 @@ class GameLoop
     # Draw!
     @renderer.render(renderQueue)
 
-class DumbTimer
-  constructor: ->
-    @lastFrameTime = null
-    @lastTick      = null
-
-  setLastFrameInfo: (@lastFrameTime, @lastTick) ->
-
 module.exports = GameLoop
