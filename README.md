@@ -29,6 +29,14 @@ drawing primitives (or, duck type--the APIs are super simple).
 
 * Run the loop!
 
+## Build and view your handywork
+
+```
+cake build
+# on a mac
+open public/index.html
+```
+
 ## License
 
 (The MIT License)
