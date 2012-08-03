@@ -127,7 +127,7 @@
       _results = [];
       for (_i = 0, _len = renderQueue.length; _i < _len; _i++) {
         rect = renderQueue[_i];
-        _results.push(rect.drawCanvasImmediate(ctx));
+        _results.push(rect.draw(ctx));
       }
       return _results;
     };
@@ -151,7 +151,8 @@
       x = options.x, y = options.y, rotation = options.rotation;
       this.position = {
         x: x,
-        y: y
+        y: y,
+        rotation: rotation
       };
       if ((this.rect != null) && (options.linkedRect != null)) {
         this.rect.position = this.position;
@@ -210,7 +211,7 @@
 
 }).call(this);
 }, "gameLoop": function(exports, require, module) {(function() {
-  var CanvasRenderer, DumbTimer, EntityManager, GameLoop, perf, root,
+  var CanvasRenderer, EntityManager, GameLoop, perf, root,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   CanvasRenderer = require("canvasRenderer");
@@ -244,8 +245,11 @@
       this.entityManager = new EntityManager;
       this.tick = 0;
       this.frameId = null;
-      this.timer = new DumbTimer;
     }
+
+    GameLoop.prototype.addEntity = function(e) {
+      return this.entityManager.addEntity(e);
+    };
 
     GameLoop.prototype.start = function() {
       return this.frameId = root.requestAnimationFrame(this.run);
@@ -259,9 +263,9 @@
       var em, renderQueue;
       if (time == null) time = perf.now();
       em = this.entityManager;
-      this.timer.setLastFrameInfo(time, this.tick++);
       this.frameId = root.requestAnimationFrame(this.run);
       em.update(this.tick, time);
+      console.dir(em.getRenderQueue());
       renderQueue = em.getRenderQueue();
       return this.renderer.render(renderQueue);
     };
@@ -270,42 +274,43 @@
 
   })();
 
-  DumbTimer = (function() {
-
-    function DumbTimer() {
-      this.lastFrameTime = null;
-      this.lastTick = null;
-    }
-
-    DumbTimer.prototype.setLastFrameInfo = function(lastFrameTime, lastTick) {
-      this.lastFrameTime = lastFrameTime;
-      this.lastTick = lastTick;
-    };
-
-    return DumbTimer;
-
-  })();
-
   module.exports = GameLoop;
 
 }).call(this);
 }, "main": function(exports, require, module) {(function() {
-  var Entity, GameLoop, Main;
+  var Entity, GameLoop, Main, Text;
 
   GameLoop = require("gameLoop");
 
   Entity = require("entity");
+
+  Text = require("rect/textBox");
 
   Main = (function() {
 
     function Main() {}
 
     Main.start = function(canvasElement) {
-      var cvs, gameLoop;
+      var cvs, gameLoop, hello, helloRect;
       cvs = document.getElementById(canvasElement);
       console.log(cvs);
       gameLoop = new GameLoop(cvs);
       window._game = gameLoop;
+      helloRect = new Text({
+        textString: "Hello, Cascadia!",
+        maxWidth: 300
+      });
+      hello = new Entity({
+        x: 300,
+        y: 300,
+        rotation: 0,
+        rect: helloRect,
+        linkedRect: true
+      });
+      hello.update = function() {
+        return this.position.rotation = this.position.rotation + Math.PI / 180;
+      };
+      gameLoop.addEntity(hello);
       return gameLoop.start();
     };
 
@@ -494,7 +499,7 @@
       TextBox.__super__.constructor.call(this, options);
       this._textString = (_ref = options.textString) != null ? _ref : "";
       this.fill = (_ref2 = options.fill) != null ? _ref2 : "#000";
-      this.font = (_ref3 = options.font) != null ? _ref3 : "12px monospace";
+      this.font = (_ref3 = options.font) != null ? _ref3 : "36px monospace";
       this.maxWidth = (_ref4 = options.maxWidth) != null ? _ref4 : 200;
     }
 
@@ -507,12 +512,14 @@
     };
 
     TextBox.prototype.draw = function(ctx) {
-      var x, y, _ref;
-      _ref = this.position, x = _ref.x, y = _ref.y;
+      var rotation, x, y, _ref;
+      _ref = this.position, x = _ref.x, y = _ref.y, rotation = _ref.rotation;
       ctx.save();
+      ctx.translate(x << 0, y << 0);
+      ctx.rotate(rotation);
       ctx.fillStyle = this.fill;
       ctx.font = this.font;
-      ctx.fillText(this._textString, x, y, this.maxWidth);
+      ctx.fillText(this._textString, 0, 0, this.maxWidth);
       return ctx.restore();
     };
 

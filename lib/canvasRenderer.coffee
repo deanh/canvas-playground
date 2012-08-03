@@ -11,6 +11,6 @@ class CanvasRenderer
     ctx = @screenBuffer
     @clearFrame()
     for rect in renderQueue
-      rect.drawCanvasImmediate(ctx)
+      rect.draw(ctx)
 
 module.exports = CanvasRenderer

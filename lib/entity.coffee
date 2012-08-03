@@ -4,7 +4,7 @@ class Entity
   constructor: (options = {}) ->
     @rect            = options.rect ? null
     {x, y, rotation} = options
-    @position        = {x: x, y: y}
+    @position        = {x: x, y: y, rotation: rotation}
 
     if @rect? and options.linkedRect?
       @rect.position = @position

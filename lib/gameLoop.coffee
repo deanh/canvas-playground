@@ -48,7 +48,9 @@ class GameLoop
     @entityManager = new EntityManager
     @tick     = 0
     @frameId  = null
-    @timer    = new DumbTimer
+
+  addEntity: (e) ->
+    @entityManager.addEntity(e)
 
   start: ->
     @frameId = root.requestAnimationFrame @run
@@ -58,7 +60,6 @@ class GameLoop
 
   run: (time = perf.now()) =>
     em = @entityManager
-    @timer.setLastFrameInfo(time, @tick++)
 
     @frameId = root.requestAnimationFrame(@run)
 
@@ -68,6 +69,7 @@ class GameLoop
 
     ##
     # Get render queue
+    console.dir em.getRenderQueue()
     renderQueue = em.getRenderQueue()
 
     ##
