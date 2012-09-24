@@ -1,16 +1,32 @@
 class CanvasRenderer
   constructor: (el) ->
-    @screenBuffer = el.getContext('2d')
+    @screenBuffer    = el
+    @screenBufferCtx = @screenBuffer.getContext('2d')
+
     @width  = parseInt(window.getComputedStyle(el).getPropertyValue("width"), 10)
     @height = parseInt(window.getComputedStyle(el).getPropertyValue("height"), 10)
 
-  clearFrame: ->
-    @screenBuffer.clearRect(0, 0, @width, @height)
+    @backBuffer      = document.createElement("canvas")
+    @backBuffer.height = @height
+    @backBuffer.width  = @width
+    @backBufferCtx   = @backBuffer.getContext('2d')
+
+  clearFrame: (ctx) ->
+    ctx.clearRect(0, 0, @width, @height)
 
   render: (renderQueue) ->
-    ctx = @screenBuffer
-    @clearFrame()
-    for rect in renderQueue
-      rect.draw(ctx)
+    ctx = @screenBufferCtx
+    @clearFrame(ctx)
+    ctx.drawImage(@backBuffer, 0, 0)
+
+    backCtx = @backBufferCtx
+    @clearFrame(backCtx)
+
+    i = 0
+    while i < renderQueue.length
+      renderQueue[i].draw(ctx)
+      i++
+
+    return
 
 module.exports = CanvasRenderer

@@ -61,7 +61,7 @@
     }
 
     ArrayEntityManager.prototype.addEntity = function(e) {
-      return this.entities.push(e);
+      this.entities.push(e);
     };
 
     ArrayEntityManager.prototype.removeEntity = function(e) {
@@ -84,18 +84,18 @@
     };
 
     ArrayEntityManager.prototype.update = function(tick, time) {
-      var ent, _i, _len, _ref, _results;
-      _ref = this.entities;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        ent = _ref[_i];
-        _results.push(typeof ent.update === "function" ? ent.update(tick, time) : void 0);
+      var i, _base;
+      i = 0;
+      while (i < this.entities.length) {
+        if (typeof (_base = this.entities[i]).update === "function") {
+          _base.update(tick, time);
+        }
+        i++;
       }
-      return _results;
     };
 
     ArrayEntityManager.prototype.toArray = function() {
-      return this.entities.slice();
+      return this.entities;
     };
 
     return ArrayEntityManager;
@@ -105,31 +105,66 @@
   module.exports = ArrayEntityManager;
 
 }).call(this);
+}, "canvasPool": function(exports, require, module) {(function() {
+  var CanvasPool;
+
+  CanvasPool = (function() {
+
+    function CanvasPool(num) {
+      var i, _fn,
+        _this = this;
+      this._canvases = [];
+      _fn = function() {
+        var cvs;
+        cvs = document.createElement("canvas");
+        cvs.height = 128;
+        cvs.width = 128;
+        return _this._canvases.push(cvs);
+      };
+      for (i = 1; 1 <= num ? i <= num : i >= num; 1 <= num ? i++ : i--) {
+        _fn();
+      }
+    }
+
+    return CanvasPool;
+
+  })();
+
+  module.exports = CanvasPool;
+
+}).call(this);
 }, "canvasRenderer": function(exports, require, module) {(function() {
   var CanvasRenderer;
 
   CanvasRenderer = (function() {
 
     function CanvasRenderer(el) {
-      this.screenBuffer = el.getContext('2d');
+      this.screenBuffer = el;
+      this.screenBufferCtx = this.screenBuffer.getContext('2d');
       this.width = parseInt(window.getComputedStyle(el).getPropertyValue("width"), 10);
       this.height = parseInt(window.getComputedStyle(el).getPropertyValue("height"), 10);
+      this.backBuffer = document.createElement("canvas");
+      this.backBuffer.height = this.height;
+      this.backBuffer.width = this.width;
+      this.backBufferCtx = this.backBuffer.getContext('2d');
     }
 
-    CanvasRenderer.prototype.clearFrame = function() {
-      return this.screenBuffer.clearRect(0, 0, this.width, this.height);
+    CanvasRenderer.prototype.clearFrame = function(ctx) {
+      return ctx.clearRect(0, 0, this.width, this.height);
     };
 
     CanvasRenderer.prototype.render = function(renderQueue) {
-      var ctx, rect, _i, _len, _results;
-      ctx = this.screenBuffer;
-      this.clearFrame();
-      _results = [];
-      for (_i = 0, _len = renderQueue.length; _i < _len; _i++) {
-        rect = renderQueue[_i];
-        _results.push(rect.draw(ctx));
+      var backCtx, ctx, i;
+      ctx = this.screenBufferCtx;
+      this.clearFrame(ctx);
+      ctx.drawImage(this.backBuffer, 0, 0);
+      backCtx = this.backBufferCtx;
+      this.clearFrame(backCtx);
+      i = 0;
+      while (i < renderQueue.length) {
+        renderQueue[i].draw(ctx);
+        i++;
       }
-      return _results;
     };
 
     return CanvasRenderer;
@@ -248,11 +283,11 @@
     }
 
     GameLoop.prototype.addEntity = function(e) {
-      return this.entityManager.addEntity(e);
+      this.entityManager.addEntity(e);
     };
 
     GameLoop.prototype.start = function() {
-      return this.frameId = root.requestAnimationFrame(this.run);
+      this.frameId = root.requestAnimationFrame(this.run);
     };
 
     GameLoop.prototype.stop = function() {
@@ -265,9 +300,8 @@
       em = this.entityManager;
       this.frameId = root.requestAnimationFrame(this.run);
       em.update(this.tick, time);
-      console.dir(em.getRenderQueue());
       renderQueue = em.getRenderQueue();
-      return this.renderer.render(renderQueue);
+      this.renderer.render(renderQueue);
     };
 
     return GameLoop;
@@ -278,7 +312,7 @@
 
 }).call(this);
 }, "main": function(exports, require, module) {(function() {
-  var Entity, GameLoop, Main, Text;
+  var CanvasPool, Entity, GameLoop, Main, Text;
 
   GameLoop = require("gameLoop");
 
@@ -286,14 +320,17 @@
 
   Text = require("rect/textBox");
 
+  CanvasPool = require("canvasPool");
+
   Main = (function() {
 
     function Main() {}
 
     Main.start = function(canvasElement) {
-      var cvs, gameLoop, hello, helloRect;
+      var cvs, gameLoop, hello, helloRect, pool;
       cvs = document.getElementById(canvasElement);
       console.log(cvs);
+      pool = new CanvasPool(300);
       gameLoop = new GameLoop(cvs);
       window._game = gameLoop;
       helloRect = new Text({
@@ -308,7 +345,7 @@
         linkedRect: true
       });
       hello.update = function() {
-        return this.position.rotation = this.position.rotation + Math.PI / 180;
+        this.position.rotation = this.position.rotation + Math.PI / 180;
       };
       gameLoop.addEntity(hello);
       return gameLoop.start();
@@ -520,7 +557,7 @@
       ctx.fillStyle = this.fill;
       ctx.font = this.font;
       ctx.fillText(this._textString, 0, 0, this.maxWidth);
-      return ctx.restore();
+      ctx.restore();
     };
 
     return TextBox;

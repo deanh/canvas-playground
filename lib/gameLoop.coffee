@@ -51,9 +51,11 @@ class GameLoop
 
   addEntity: (e) ->
     @entityManager.addEntity(e)
+    return
 
   start: ->
     @frameId = root.requestAnimationFrame @run
+    return
 
   stop: ->
     root.cancelAnimationFrame(@frameId)
@@ -69,11 +71,11 @@ class GameLoop
 
     ##
     # Get render queue
-    console.dir em.getRenderQueue()
     renderQueue = em.getRenderQueue()
 
     ##
     # Draw!
     @renderer.render(renderQueue)
+    return
 
 module.exports = GameLoop

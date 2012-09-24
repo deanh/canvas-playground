@@ -5,6 +5,7 @@ class ArrayEntityManager
 
   addEntity: (e) ->
     @entities.push(e)
+    return
 
   removeEntity: (e) ->
     idx = @enities.indexOf(e)
@@ -18,10 +19,13 @@ class ArrayEntityManager
     @toArray()
 
   update: (tick, time) ->
-    for ent in @entities
-      ent.update?(tick, time)
+    i = 0
+    while i < @entities.length
+      @entities[i].update?(tick, time)
+      i++
+    return
 
   toArray: ->
-    @entities.slice()
+    @entities
 
 module.exports = ArrayEntityManager

@@ -25,5 +25,6 @@ class TextBox extends Rect
     ctx.font      = @font
     ctx.fillText(@_textString, 0, 0, @maxWidth)
     ctx.restore()
+    return
 
 module.exports = TextBox

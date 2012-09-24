@@ -1,11 +1,14 @@
 GameLoop       = require "gameLoop"
 Entity         = require "entity"
 Text           = require "rect/textBox"
+CanvasPool     = require "canvasPool"
 
 class Main
   @start: (canvasElement) ->
     cvs = document.getElementById(canvasElement)
     console.log cvs
+
+    pool = new CanvasPool(300)
 
     gameLoop = new GameLoop(cvs)
     window._game = gameLoop
@@ -21,6 +24,7 @@ class Main
 
     hello.update = ->
       @position.rotation = @position.rotation + Math.PI / 180
+      return
 
     gameLoop.addEntity(hello)
 
