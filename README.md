@@ -13,7 +13,6 @@ cd canvas-playground
 
 npm install
 ```
-
 ## Use
 
 * Extend from entity.coffee and rect.coffee for your game entities and
@@ -36,6 +35,15 @@ cake build
 # on a mac
 open public/index.html
 ```
+
+Or use the handy-dandy, built-in dev server:
+
+```
+coffee server.coffee
+```
+
+...then navigate to http://localhost:4000. Changes you make should
+show up as soon as you save a file.
 
 ## License
 
