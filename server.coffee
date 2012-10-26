@@ -17,7 +17,7 @@ app = express()
 
 app.configure ->
   app.use express.static(__dirname + "/public")
-  app.get "/playground.js", pkg.createServer()
+  app.get "/js/playground.js", pkg.createServer()
 
 port = argv[0] or process.env.PORT or 4000
 console.log "Starting server on port: #{port}"
