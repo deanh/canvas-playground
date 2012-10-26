@@ -15,10 +15,10 @@ npm install
 ```
 ## Use
 
-* Extend from entity.coffee and rect.coffee for your game entities and
+* Extend from src/entity.coffee and src/rect.coffee for your game entities and
 drawing primitives (or, duck type--the APIs are super simple).
 
-* Instantiate your entities in main.coffee
+* Instantiate your entities in src/main.coffee
 
 * Do something interesting with their update() methods (this gets
   called for every entity, once per tick and is where you should
