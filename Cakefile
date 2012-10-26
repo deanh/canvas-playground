@@ -4,7 +4,7 @@ fs      = require 'fs'
 
 task 'build', 'Build CS', ->
   pkg = stitch.createPackage
-    paths: [__dirname + '/lib']
+    paths: [__dirname + '/src']
 
   pkg.compile (err, source) ->
     fs.writeFile 'public/js/playground.js', source, (err) ->

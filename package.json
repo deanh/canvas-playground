@@ -1,8 +1,15 @@
 {
   "name": "canvas-playground",
-  "version": "0.0.1",
+  "description": "A simple framework and event loop for canvas experimentation.",
+  "version": "0.0.2",
+  "homepage":"https://github.com/massivelyfun/canvas-playground",
+  "repository": {
+    "type": "git"
+  },
   "dependencies": {
     "coffee-script": "~1.2",
+    "express": "3.x",
+    "underscore": "= 1.2.2",
     "stitch": "~0.3.3"
   }
 }
