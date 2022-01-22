@@ -5,6 +5,6 @@ npm-debug.log
 .\#*
 logs
 dumps
-.parchel-cache
+.parcel-cache
 dist
 
