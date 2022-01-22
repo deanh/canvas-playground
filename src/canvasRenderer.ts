@@ -1,5 +1,4 @@
 import { Entity } from './entity';
-import {Rect} from './rect';
 
 export class CanvasRenderer {
     width: number;
@@ -20,7 +19,7 @@ export class CanvasRenderer {
         let ctx = this.screenBuf;
         this.clearFrame();
         for (let e of renderQueue) {
-            e.draw(ctx);
+            e.paint(ctx);
         }
     }
 

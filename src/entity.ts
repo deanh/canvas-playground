@@ -1,20 +1,20 @@
 import { Point } from './point';
-import {Rect} from './rect';
+import {Painter} from './painter';
 
 type UpdateMethod = (time: DOMHighResTimeStamp, e: Entity) => void;
 
 export class Entity {
     update: UpdateMethod;
-    rect: Rect;
+    painter: Painter;
     position: Point;
 
-    constructor(rect: Rect, pos: Point, fn: UpdateMethod) {
-        this.rect = rect;
+    constructor(painter: Painter, pos: Point, fn: UpdateMethod) {
+        this.painter = painter;
         this.position = pos;
         this.update = fn;
     }
 
-    draw(ctx: CanvasRenderingContext2D) {
-        this.rect.draw(ctx, this.position);
+    paint(ctx: CanvasRenderingContext2D) {
+        this.painter.paint(ctx, this.position);
     }
 }
