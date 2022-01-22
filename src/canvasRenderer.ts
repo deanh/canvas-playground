@@ -1,4 +1,5 @@
 import { Entity } from './entity';
+import { Point, Rectangle } from './geometry';
 
 export class CanvasRenderer {
     width: number;
@@ -22,6 +23,5 @@ export class CanvasRenderer {
             e.paint(ctx);
         }
     }
-
 }
 

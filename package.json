@@ -2,12 +2,16 @@
   "name": "canvas-playground",
   "version": "0.3.0",
   "devDependencies": {
+    "@types/jest": "^27.4.0",
     "parcel": "^2.2.1",
+    "ts-jest": "^27.1.3",
+    "ts-node": "^10.4.0",
     "typescript": "^4.5.5"
   },
   "scripts": {
     "dev": "parcel src/index.html",
     "build": "parcel build src/index.html",
-    "assets": "cp -r static/* dist"
+    "assets": "cp -r static/* dist",
+    "test": "jest --verbose"
   }
 }

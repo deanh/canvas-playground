@@ -1,4 +1,4 @@
-import {Point} from './point';
+import { Point } from './geometry';
 
 export abstract class Painter {
     abstract paint(ctx: CanvasRenderingContext2D, p: Point): void;
