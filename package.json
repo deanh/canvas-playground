@@ -1,8 +1,13 @@
 {
   "name": "canvas-playground",
   "version": "0.0.1",
-  "dependencies": {
-    "coffee-script": "~1.2",
-    "stitch": "~0.3.3"
+  "devDependencies": {
+    "parcel": "^2.2.1",
+    "typescript": "^4.5.5"
+  },
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "build": "parcel build src/index.html",
+    "assets": "cp -r static/* dist"
   }
 }
