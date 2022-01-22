@@ -1,8 +1,8 @@
 import { Point } from "../point";
-import { Rect } from "../rect";
+import { Painter } from "../painter";
 
-export class RedBox extends Rect {
-    draw(ctx: CanvasRenderingContext2D, p: Point): void {
+export class RedBox extends Painter {
+    paint(ctx: CanvasRenderingContext2D, p: Point): void {
         let {x, y} = p;
         ctx.save();
         ctx.fillStyle = "red";

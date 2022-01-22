@@ -18,9 +18,9 @@ npm install
 
 * '''npm run dev''' will start Parcel's file watcher and dev server at http://localhost:1234
 
-* Extend from entity.ts and rect.ts for your game entities and drawing primitives (or, duck type--the APIs are super simple).
+* Extend from entity.ts and painter.ts for your game entities and rendering primitives (or, duck type--the APIs are super simple).
 
-* Mental model: manage behavior in entities, and rendering in rects. You define '''update(time: DOMHighResTimeStamp, e: Entity) => void''' for your entity. This is the behavior that happens on every tick. You also give your entity a rect, which needs to have '''draw()ctx: CanvasRenderingContext2D, p: Point): void'''. Entities delgate rendering to via '''draw()''' to their rect. I'm using two different delegation patterns here (functional vs. object), but they currently match the required complexity. I may unify the API in the future.
+* Mental model: manage behavior in entities, and rendering in painters. You define '''update(time: DOMHighResTimeStamp, e: Entity) => void''' for your entity. This is the behavior that happens on every tick. You also give your entity a painter, which needs to have '''paint()ctx: CanvasRenderingContext2D, p: Point): void'''. Entities delgate rendering to via '''paint()''' to their rect. I'm using two different delegation patterns here (functional vs. object), but they currently match the required complexity. I may unify the API in the future.
 
 * '''app.ts''' is the code entry point. This is where you will wire together your app and make interesting things happen.
 
