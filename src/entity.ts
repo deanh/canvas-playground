@@ -1,17 +1,19 @@
-import { Point } from './point';
-import {Painter} from './painter';
+import { Point, Shape } from './geometry';
+import { Painter } from './painter';
 
 type UpdateMethod = (time: DOMHighResTimeStamp, e: Entity) => void;
+const nop = (time: DOMHighResTimeStamp, e: Entity) => {};
 
-export class Entity {
-    update: UpdateMethod;
+export abstract class Entity {
+    abstract update(time: DOMHighResTimeStamp, e: Entity): void;
     painter: Painter;
     position: Point;
+    shape: Shape;
 
-    constructor(painter: Painter, pos: Point, fn: UpdateMethod) {
+    constructor(painter: Painter, pos: Point, shape: Shape) {
         this.painter = painter;
         this.position = pos;
-        this.update = fn;
+        this.shape = shape;
     }
 
     paint(ctx: CanvasRenderingContext2D) {

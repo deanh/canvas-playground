@@ -1,4 +1,4 @@
-import { Point, Rectangle } from '../src/geometry'
+import { Circle, Point, Rectangle } from '../src/geometry'
 
 test('can instantiate and store values in a point', () => {
     const p = new Point(5, 5);
@@ -23,28 +23,18 @@ test('can add points', () => {
     expect(p3.y).toBe(14);
 });
 
-test('computed values in Rectangle', () => {
-    const r = new Rectangle(new Point(0, 0), new Point(20, 30));
-    
-    expect(r.topLeft.x).toBe(0);
-    expect(r.topLeft.y).toBe(0);
-    expect(r.topRight.x).toBe(20);
-    expect(r.topRight.y).toBe(0);
+test('compute distance between 2 points', () => {
+    const p1 = new Point(0, 0);
+    const p2 = new Point(0, 1);
+    const p3 = new Point(-1, 1);
 
-    expect(r.bottomLeft.x).toBe(0);
-    expect(r.bottomLeft.y).toBe(30);
-    expect(r.bottomRight.x).toBe(20);
-    expect(r.bottomRight.y).toBe(30);
-});
-
-test('first point in rectangle must have mins', () => {
-    expect(() => {
-        new Rectangle(new Point(10, 10), new Point(0, 0));
-    }).toThrowError();
+    expect(p1.distance(p2)).toBeCloseTo(1);
+    expect(p2.distance(p3)).toBeCloseTo(1);
+    expect(p1.distance(p3)).toBeCloseTo(Math.sqrt(2));
 });
 
 test('point containment in rectangle', () => {
-    const r     = new Rectangle(new Point(0, 0), new Point(20, 20));
+    const r     = new Rectangle(new Point(0, 0), 20, 20);
 
     const inP   = new Point(10, 10);
     const outP1 = new Point(30, 0);
@@ -60,12 +50,15 @@ test('point containment in rectangle', () => {
 });
 
 test('rectangle intersection', () => {
-    const r = new Rectangle(new Point(0, 0), new Point(20, 20));
+    const r = new Rectangle(new Point(0, 0), 20, 20);
 
-    let r2 = new Rectangle(new Point(5, 5), new Point(10, 10));
+    let r2 = new Rectangle(new Point(5, 5), 10, 10);
     expect(r.intersects(r2)).toBeTruthy();
     
-    r2 = new Rectangle(new Point(-10, 5), new Point(-5, 10));
+    r2 = new Rectangle(new Point(-20, 5), 5, 10);
     expect(r.intersects(r2)).toBeFalsy();
 });
 
+test('circle instantiation', () => {
+    const c = new Circle(new Point(0, 0), 1);
+});

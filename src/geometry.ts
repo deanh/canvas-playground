@@ -23,44 +23,49 @@ class Point {
     }
 }
 
-class Rectangle {
-    readonly topLeft: Point;
-    readonly bottomRight: Point;
-    readonly topRight: Point;
-    readonly bottomLeft: Point;
+interface Shape {
+    containsPoint(p: Point): boolean;
+    toRectangle(): Rectangle;
+}
+
+class Rectangle implements Shape {
+    readonly center: Point;
     readonly width: number;
     readonly height: number;
 
-    constructor(topL: Point, bottomR: Point) {
-        this.topLeft     = topL;
-        this.bottomRight = bottomR;
+    constructor(center: Point, width: number, height: number) {
+        this.center = center;
 
-        this.width      = bottomR.x - topL.x;
-        this.height     = bottomR.y - topL.y;
+        this.width      = width;
+        this.height     = height;
 
         // just keep it simple with this convention
         if (this.height <= 0 || this.width <= 0) {
             throw new IllegalConstruction("First point must contain x and y minimums");
         }
 
-        this.topRight   = new Point(bottomR.x, topL.y);
-        this.bottomLeft = new Point(topL.x, bottomR.y);
     }
 
     containsPoint(p: Point): boolean {
-        return (p.x >= this.topLeft.x && p.x <= this.bottomRight.x) && 
-               (p.y >= this.topLeft.y && p.y <= this.bottomRight.y);
+        const topL = new Point(this.center.x - this.width / 2, this.center.y - this.height / 2)
+        return (p.x >= topL.x && p.x <= topL.x + this.width) && 
+               (p.y >= topL.y && p.y <= topL.y + this.height);
     }
 
     intersects(other: Rectangle): boolean {
-        return this.containsPoint(other.topLeft)     || 
-               this.containsPoint(other.topRight)    ||
-               this.containsPoint(other.bottomLeft)  ||
-               this.containsPoint(other.bottomRight);
+        const xDist = Math.abs(this.center.x - other.center.x);
+        const yDist = Math.abs(this.center.y - other.center.y);
+
+        return (this.width + other.width)   >= (xDist * 2) && 
+               (this.height + other.height) >= (yDist * 2);
+    }
+
+    toRectangle(): Rectangle {
+        return this;
     }
 }
 
-class Circle {
+class Circle implements Shape {
     readonly center: Point;
     readonly radius: number;
 
@@ -76,10 +81,15 @@ class Circle {
     intersects(c: Circle): boolean {
         return this.center.distance(c.center) <= this.radius + c.radius;
     }
+
+    toRectangle(): Rectangle {
+        return new Rectangle(this.center, this.radius, this.radius);
+    }
 }
 
 export {
     Point,
     Rectangle,
-    Circle
+    Circle,
+    Shape
 }

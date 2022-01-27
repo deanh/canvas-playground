@@ -12,6 +12,6 @@
     "dev": "parcel src/index.html",
     "build": "parcel build src/index.html",
     "assets": "cp -r static/* dist",
-    "test": "jest --verbose"
+    "test": "jest --no-cache --silent=false --runInBand"
   }
 }

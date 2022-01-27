@@ -5,13 +5,18 @@ import { RedBox } from "./painter/RedBox";
 
 const cvs  = <HTMLCanvasElement>document.getElementById("canvas");
 const loop = new GameLoop(cvs);
-const frame = new Rectangle(new Point(0, 0), new Point(loop.renderer.width, loop.renderer.height));
+const frame = new Rectangle(new Point(0, 0), loop.renderer.width, loop.renderer.height);
 
-const ent = new Entity(new RedBox(40, 40), new Point(0, 0), (time, e) => {
-    let {x, y} = e.position;
+const p = new Point(0, 0);
 
-    e.position = new Point((x + 2) % frame.width, (y + 1) % frame.height);
-});
+class Mover extends Entity {  
+    update(time: number, e: Entity): void {
+        let {x, y} = e.position;
+        e.position = new Point((x + 1) % frame.width, (y + 1) % frame.height);
+    }
+}
+
+const ent = new Mover(new RedBox(40, 40), p, new Rectangle(p, 40, 40));
 
 loop.addEntity(ent);
 loop.start();
